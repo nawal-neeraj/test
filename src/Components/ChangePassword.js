@@ -11,13 +11,15 @@ import {
 
 
 class ChangePassword extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state={
-            OldPassword:'',
-            LoginDetail:[],
+        this.state = {
+            OldPassword: '',
+            LoginDetail: [],
+            pass: '',
+            userName: ''
 
-           
+
         }
     }
 
@@ -26,20 +28,22 @@ class ChangePassword extends Component {
         script.src = "/assets/js/pages/form-wizard.init.js";
         script.async = true;
         document.body.appendChild(script);
-        // var data = localStorage.getItem('LoginDetail')
-        // var d = JSON.parse(data)
-        // console.log(d,"details")
+        var dataName = localStorage.getItem('LoginDetailName')
+        var dataOldPass = localStorage.getItem('LoginDetailPass')
+        this.setState({
+            pass: JSON.parse(dataOldPass),
+            userName: dataName
+        })
     }
 
-    
-    
 
-    onPost = () =>{
+
+
+    onPost = () => {
         Notiflix.Loading.Dots('Please wait...');
-        var login = localStorage.getItem('LoginDetail');
-        // var details=JSON.parse(login)
-      console.log(login,"all details")
-      Notiflix.Loading.Remove()
+        
+        window.location.href = `${process.env.PUBLIC_URL}/dashboard`
+        Notiflix.Loading.Remove()
     }
 
     handleOldPassword = event => {
@@ -54,38 +58,44 @@ class ChangePassword extends Component {
         this.props.setConfirmNewPassword(event.target.value)
     }
 
-    handleSubmit = () =>{
-        // if(this.props.Chngpswrd.OldPassword !== ''){
-        //     if(this.props.Chngpswrd.OldPassword==this.state.OldPassword){
-        //     if(this.props.Chngpswrd.NewPassword!==''){
-        //         if(this.props.Chngpswrd.ConfirmNewPassword !==''){
-        //             if(this.props.Chngpswrd.NewPassword==this.props.Chngpswrd.ConfirmNewPassword){
-                    console.log(this.props.ChngPaswrd)
-                    this.onPost();
-    //             }
-    //             else{
-    //                 Notiflix.Notify.Failure('New Password and Confirm Password do not match'); 
-    //             }
-    //         }
-    //         else{
-    //             Notiflix.Notify.Failure('Confirm Password Cannot be empty'); 
-    //         }
+    handleSubmit = () => {
+        // console.log(this.state.pass,"<======sa")
+        if (this.props.Chngpswrd.OldPassword !== '') {
+            if (this.props.Chngpswrd.OldPassword == this.state.pass) {
+                if (this.props.Chngpswrd.NewPassword !== '') {
+                    if (this.props.Chngpswrd.ConfirmNewPassword !== '') {
+                        if (this.props.Chngpswrd.NewPassword == this.props.Chngpswrd.ConfirmNewPassword) {
+                            // alert(this.props.Chngpswrd.OldPassword)
+                            // alert(this.state.pass)
+                            // console.log(this.props.Chngpswrd.OldPassword,'asdasd', this.state.pass)
+                            // alert("hello")
+                            localStorage.setItem('LoginDetailPass', this.props.Chngpswrd.NewPassword)
+                            this.onPost();
+                        }
+                        else {
+                            Notiflix.Notify.Failure('New Password and Confirm Password do not match');
+                        }
+                    }
+                    else {
+                        Notiflix.Notify.Failure('Confirm Password Cannot be empty');
+                    }
 
-    //         }
-    //         else{
-    //             Notiflix.Notify.Failure('New Password Cannot be empty'); 
-    //         }
+                }
+                else {
+                    Notiflix.Notify.Failure('New Password Cannot be empty');
+                }
 
-    //     }
-    //     else{
-    //         Notiflix.Notify.Failure('Incorrect Old Password');
-    //       }
+            }
+            else {
+                Notiflix.Notify.Failure('Incorrect Old Password');
+            }
 
-    // }
-    //     else{
-    //         Notiflix.Notify.Failure('old Password Cannot be empty');
-    //       }
+        }
+        else {
+            Notiflix.Notify.Failure('old Password Cannot be empty');
+        }
     }
+
 
 
     render() {
@@ -115,7 +125,7 @@ class ChangePassword extends Component {
                                                     <strong className="mr-auto">Reset Password</strong>
                                                 </div>
                                                 <div className="toast-body">
-                                                    <form class="needs-validation" onSubmit={(e)=>{
+                                                    <form class="needs-validation" onSubmit={(e) => {
                                                         e.preventDefault()
                                                     }}>
                                                         <div className="row">
@@ -125,7 +135,7 @@ class ChangePassword extends Component {
                                                                     <input type="Password" class="form-control" id="validationCustom01"
                                                                         value={this.props.Chngpswrd.OldPassword}
                                                                         onChange={this.handleOldPassword.bind(this)} ></input>
-                                                                   
+
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6">
@@ -134,7 +144,7 @@ class ChangePassword extends Component {
                                                                     <input type="Password" class="form-control" id="validationCustom01"
                                                                         value={this.props.Chngpswrd.NewPassword}
                                                                         onChange={this.handleNewPassword.bind(this)}></input>
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6">
@@ -143,13 +153,13 @@ class ChangePassword extends Component {
                                                                     <input type="Password" className="form-control" id="validationCustom01"
                                                                         value={this.props.Chngpswrd.ConfirmNewPassword}
                                                                         onChange={this.handleConfirmNewPassword.bind(this)}></input>
-                                                                   
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div>
                                                             <button className="btn btn-success" style={{ float: 'right', marginBottom: '9px' }}
-                                                             onClick = {this.handleSubmit.bind(this)}> Submit</button>
+                                                                onClick={this.handleSubmit.bind(this)}> Submit</button>
                                                         </div>
                                                     </form>
                                                 </div>

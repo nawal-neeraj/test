@@ -22,26 +22,28 @@ class Login extends React.Component {
         script.async = true;
         document.body.appendChild(script);
 
-        var login = localStorage.getItem('LoginDetail');
-        var details = JSON.parse(login)
-        this.setState({
-            datass: details
-        })
-        if (details != null) {
-            this.props.history.push('./dashboard')
-        }
+        // var login = localStorage.getItem('LoginDetail');
+        // var details = JSON.parse(login)
+        // this.setState({
+        //     datass: details
+        // // })
+        // if (details != null) {
+        //     this.props.history.push('./dashboard')
+        // }
         
     }
 
     onPost = () => {
         // console.log(this.props.LoginCred.Username)
-        const data = this.props.LoginCred
+        const dataName = this.props.LoginCred.Username
+        const dataPass = this.props.LoginCred.Password
         // console.log(data,"asdasd")
 
         Notiflix.Loading.Dots('');
-        localStorage.setItem('LoginDetail', this.props.LoginCred)
+        localStorage.setItem('LoginDetailName', JSON.stringify(dataName))
+        localStorage.setItem('LoginDetailPass', JSON.stringify(dataPass))
         Notiflix.Loading.Remove()
-        // window.location.href = `${process.env.PUBLIC_URL}/dashboard`
+        window.location.href = `${process.env.PUBLIC_URL}/dashboard`
     }
 
 
